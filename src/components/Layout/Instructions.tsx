@@ -1,6 +1,6 @@
 import { Button, Heading, Icon, Stack, Text } from "@chakra-ui/react"
-import { IconType } from "react-icons";
-import { FiAlertTriangle, FiSun, FiZap } from "react-icons/fi";
+import { IconType } from "react-icons"
+import { FiAlertTriangle, FiSun, FiZap } from "react-icons/fi"
 
 type Introdution = {
   icon: IconType,
@@ -53,7 +53,7 @@ export const Instructions = ({ onClick }: IInstructionsProps) => {
       <Heading
         size="lg"
         marginY={8}
-      >ChatGPT</Heading>
+      >Satoshi Nakamoto AMA</Heading>
       <Stack
         direction={["column", "column", "row"]}
       >

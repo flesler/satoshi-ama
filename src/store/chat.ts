@@ -27,7 +27,7 @@ type ChatContent = {
 
 type ChatContentEmmiter = "gpt" | "user" | "error";
 
-const savedChats = JSON.parse(store.session("@chat"));
+const savedChats = JSON.parse(store.local("@chat"));
 const getSafeSavedChats = () => {
   if (Array.isArray(savedChats) && savedChats.length > 0) {
     return savedChats;
@@ -51,20 +51,6 @@ const initialChatState: Chat[] = getSafeSavedChats() || [
       }
     ],
   },
-  {
-    id: '2',
-    role: 'Follow me 😉',
-    content: [
-      {
-        emitter: "user",
-        message: "Follow me on \nTwitter [@euwesleymaik](https://twitter.com/euwesleymaik)\nInstagram [eumaik_](https://instagram.com/eumaik_)\nGitHub [WesleyMaik](https://github.com/wesleymaik)"
-      },
-      {
-        emitter: "gpt",
-        message: "Thanks!"
-      }
-    ],
-  }
 ];
 
 export const useChat = create<UseChatProps>((set, get) => ({

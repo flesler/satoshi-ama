@@ -1,40 +1,36 @@
 //Modules
-import { useModal } from "@/hooks/useModal";
+import { useModal } from "@/hooks/useModal"
 import { useChat } from "@/store/chat"
-import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { useAutoAnimate } from "@formkit/auto-animate/react"
 import { motion } from "framer-motion"
-import { CSSProperties, useEffect, useState } from "react";
-import store from "store2";
+import { CSSProperties, useEffect, useState } from "react"
+import store from "store2"
 
 //Components
+import { useAPI } from '@/store/api'
 import {
-    Badge,
-    Button,
-    Divider,
-    Heading,
-    IconButton,
-    Spacer,
-    Stack,
-    Text,
+  Button,
+  Divider,
+  Heading,
+  IconButton,
+  Spacer,
+  Stack,
+  Text,
   useColorMode
-} from "@chakra-ui/react";
+} from "@chakra-ui/react"
 import {
-    FiCheckCircle,
-    FiExternalLink,
-    FiKey,
-    FiLogOut,
-    FiMenu,
-    FiMessageSquare,
-    FiMoon,
-    FiPlus,
-    FiSun,
-    FiTrash2,
-    FiUser,
-    FiX
-} from "react-icons/fi";
+  FiKey,
+  FiLogOut,
+  FiMenu,
+  FiMessageSquare,
+  FiMoon,
+  FiPlus,
+  FiSun,
+  FiTrash2, FiX
+} from "react-icons/fi"
 import {
-    APIKeyModal as APIKeyModalContent
-} from "../Layout/APIKeyModal";
+  APIKeyModal as APIKeyModalContent
+} from "../Layout/APIKeyModal"
 
 export interface SideBarProps {
   isResponsive?: boolean
@@ -46,6 +42,7 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
     handleClose = () => setIsOpen(false);
 
   const [listRef] = useAutoAnimate();
+  const { api, setAPI } = useAPI()
 
   const { toggleColorMode, colorMode } = useColorMode()
   const {
@@ -58,10 +55,6 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
   } = useChat();
 
   const {
-    Modal: AccountModal,
-    handleOpen: handleOpenAccountModal
-  } = useModal()
-  const {
     Modal: APIKeyModal,
     handleOpen: handleOpenAPIKeyModal,
     handleClose: handleCloseAPIKeyModal
@@ -72,7 +65,7 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
   }, [isResponsive]);
 
   useEffect(() => {
-    store.session("@chat", JSON.stringify(chat))
+    store.local("@chat", JSON.stringify(chat))
   }, [chat, selectedChat])
 
   const responsiveProps = isResponsive ? {
@@ -203,7 +196,7 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
           borderColor="white"
         />
         <Stack>
-          <Button
+          {!!chat?.length && <Button
             leftIcon={<FiTrash2 />}
             justifyContent="flex-start"
             padding={2}
@@ -212,28 +205,7 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
             _hover={{
               backgroundColor: "blackAlpha.300"
             }}
-          >Clear conversations</Button>
-          <Button
-            padding={2}
-            justifyContent="space-between"
-            backgroundColor="transparent"
-            onClick={handleOpenAccountModal}
-            _hover={{
-              backgroundColor: "blackAlpha.300"
-            }}
-          >
-            <Text
-              display="flex"
-              alignItems="center"
-              gap={2}
-            ><FiUser /> Upgrade to Plus</Text>
-            <Badge
-              backgroundColor="orange.200"
-              color="black"
-              paddingX={2}
-              rounded={4}
-            >New</Badge>
-          </Button>
+          >Clear conversations</Button>}
           <Button
             justifyContent="flex-start"
             padding={2}
@@ -244,7 +216,7 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
               backgroundColor: "blackAlpha.300"
             }}
           >{(colorMode == 'dark') ? ('Light mode') : ('Dark mode')}</Button>
-          <Button
+          {/* <Button
             leftIcon={<FiExternalLink />}
             justifyContent="flex-start"
             padding={2}
@@ -252,16 +224,17 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
             _hover={{
               backgroundColor: "blackAlpha.300"
             }}
-          >Updates & FAQ</Button>
-          <Button
+          >Updates & FAQ</Button> */}
+          {api && <Button
             leftIcon={<FiLogOut />}
             justifyContent="flex-start"
             padding={2}
             backgroundColor="transparent"
+            onClick={() => setAPI('')}
             _hover={{
               backgroundColor: "blackAlpha.300"
             }}
-          >Log Out</Button>
+          >Log Out</Button>}
           <Button
             leftIcon={<FiKey />}
             padding={2}
@@ -274,61 +247,6 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
           >Change API Key</Button>
         </Stack>
       </Stack>
-      <AccountModal title="Your account">
-        <Stack
-          direction={!isResponsive ? "row" : "column"}
-          spacing={4}
-          padding={4}
-          divider={(
-            <Divider
-              orientation={!isResponsive ? "vertical" : "horizontal"}
-            />
-          )}
-        >
-          <Stack>
-            <Heading
-              size="md"
-            >Free Plan</Heading>
-            <Button disabled>Your Current Plan</Button>
-            {[
-              "Available when demand is low",
-              "Standard response speed",
-              "Regular model updates"
-            ].map((text, key) => (
-              <Text
-                display="flex"
-                alignItems="center"
-                gap={2}
-                key={key}
-              ><FiCheckCircle />{text}</Text>
-            ))}
-          </Stack>
-          <Stack>
-            <Stack direction="row">
-              <Heading
-                size="md"
-              >ChatGPT Plus</Heading>
-              <Heading
-                color="purple.400"
-                size="md"
-              >USD $20/mo</Heading>
-            </Stack>
-            <Button colorScheme="green">Upgrade plan</Button>
-            {[
-              "Available even when demand is high",
-              "Faster response speed",
-              "Priority access to new features"
-            ].map((text, key) => (
-              <Text
-                display="flex"
-                alignItems="center"
-                gap={2}
-                key={key}
-              ><FiCheckCircle color="#1a7f64" />{text}</Text>
-            ))}
-          </Stack>
-        </Stack>
-      </AccountModal>
       <APIKeyModal
         title="API Key"
       >
