@@ -36,7 +36,7 @@ yarn install
 ```
 
 3. Environment (important)
-   Create an .env file at the root of the project with the following key:
+  Create an .env file at the root of the project with the following key:
 
 ```
 //.env

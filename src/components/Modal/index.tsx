@@ -18,48 +18,48 @@ import {
 } from "@chakra-ui/react";
 
 export interface ModalProps extends ComponentProps<typeof ModalBody> {
-    children?: ReactNode
+  children?: ReactNode
 };
 
 export interface ModalRef {
-    isOpen: boolean,
-    handleOpen: () => void,
-    handleClose: () => void
+  isOpen: boolean,
+  handleOpen: () => void,
+  handleClose: () => void
 };
 
 export const Modal = forwardRef<ModalRef, ModalProps>((
-    { title, ...props }, ref
+  { title, ...props }, ref
 ) => {
-    const {
-        isOpen,
-        onOpen: handleOpen,
-        onClose: handleClose
-    } = useDisclosure()
+  const {
+    isOpen,
+    onOpen: handleOpen,
+    onClose: handleClose
+  } = useDisclosure()
 
-    useImperativeHandle(ref, () => ({
-        isOpen,
-        handleOpen,
-        handleClose
-    }));
+  useImperativeHandle(ref, () => ({
+    isOpen,
+    handleOpen,
+    handleClose
+  }));
 
-    return (
-        <DefaultModal
-            isOpen={isOpen}
-            onClose={handleClose}
-            isCentered
-        >
-            <ModalOverlay />
-            <ModalContent
-                maxWidth="fit-content"
-            >
-                <ModalHeader>{title}</ModalHeader>
-                <ModalCloseButton />
-                <ModalBody
-                    {...props}
-                />
-            </ModalContent>
-        </DefaultModal>
-    );
+  return (
+    <DefaultModal
+      isOpen={isOpen}
+      onClose={handleClose}
+      isCentered
+    >
+      <ModalOverlay />
+      <ModalContent
+        maxWidth="fit-content"
+      >
+        <ModalHeader>{title}</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody
+          {...props}
+        />
+      </ModalContent>
+    </DefaultModal>
+  )
 });
 
 Modal.displayName = "Modal";
