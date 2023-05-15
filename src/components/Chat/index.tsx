@@ -210,6 +210,7 @@ export const Chat = ({ ...props }: ChatProps) => {
             autoFocus={true}
             variant="filled"
             placeholder="Use ↑/↓ arrows to cycle through example questions (no API Key needed!)..."
+            isDisabled={isLoading}
             inputRightAddon={(
               <IconButton
                 aria-label="send_button"
@@ -233,7 +234,7 @@ export const Chat = ({ ...props }: ChatProps) => {
             textAlign="center"
             fontSize="sm"
             opacity={.5}
-          >Free Research Preview. Our goal is to make AI systems more natural and safe to interact with. Your feedback will help us improve.</Text>
+          >This project is only a Proof of Concept. Answers sometimes make no sense or don't reflect the source information. Your feedback is greatly appreciated.</Text>
         </Stack>
       </Stack>
     </Stack>

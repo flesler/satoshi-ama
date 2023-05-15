@@ -31,7 +31,8 @@ export const APIKeyModal = ({ onConfirm }: APIKeyProps) => {
     <Stack
       width="full"
     >
-      <Text>In order to submit custom questions, you need to provide your own OpenAPI API key</Text>
+      <Text>In order to submit custom questions, you need to provide your own OpenAI API key</Text>
+      <Text>The API key is only stored locally in your device and nowhere else</Text>
       <Input
         inputLeftAddon={<FiKey />}
         placeholder="Enter your API Key from ChatGPT here."
