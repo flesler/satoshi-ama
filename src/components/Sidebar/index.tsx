@@ -7,7 +7,7 @@ import { CSSProperties, useEffect, useState } from "react"
 import store from "store2"
 
 //Components
-import { useAPI } from '@/store/apiKey'
+import { useApiKey } from '@/store/apiKey'
 import {
   Button,
   Divider,
@@ -42,7 +42,7 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
     handleClose = () => setIsOpen(false);
 
   const [listRef] = useAutoAnimate();
-  const { apiKey, setAPIKey } = useAPI()
+  const { apiKey, clearAPIKey } = useApiKey()
 
   const { toggleColorMode, colorMode } = useColorMode()
   const {
@@ -233,12 +233,13 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
             justifyContent="flex-start"
             padding={2}
             backgroundColor="transparent"
-            onClick={() => setAPIKey('')}
+            onClick={() => clearAPIKey()}
             _hover={{
               backgroundColor: "blackAlpha.300"
             }}
           >Log Out</Button>}
           <Button
+            id="set-api-key"
             leftIcon={<FiKey />}
             padding={2}
             justifyContent="flex-start"

@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form"
 //Components
 import { Input } from "@/components/Input"
 import api from '@/services/api'
-import { useAPI } from "@/store/apiKey"
+import { useApiKey } from "@/store/apiKey"
 import { useQuestions } from '@/store/questions'
 import {
   Avatar,
@@ -33,12 +33,13 @@ const HALLUCIONATION_WARNING = `⚠️ This response is very likely an hallucina
 const LINK = /(http[^),\n! ]+)/g
 
 export const Chat = ({ ...props }: ChatProps) => {
-  const { apiKey } = useAPI()
+  const { apiKey, clearAPIKey } = useApiKey()
   const {
     selectedChat,
     addMessage,
     addChat,
   } = useChat()
+
   // const selectedId = selectedChat?.id,
   //   selectedRole = selectedChat?.role;
 
@@ -67,7 +68,9 @@ export const Chat = ({ ...props }: ChatProps) => {
     updateScroll()
     const sendRequest = async (selectedId: string) => {
       if (!apiKey && !questions.includes(prompt)) {
-        return addMessage(selectedId, { emitter: "error", message: 'A valid OpenAI API key is required to send custom prompts' })
+        // If no API key is set and the question is non-standard, they need to provide an API key first
+        document.getElementById('set-api-key')?.click()
+        return
       }
       askedQuestion(prompt)
       setIsLoading(true)
@@ -87,7 +90,12 @@ export const Chat = ({ ...props }: ChatProps) => {
         addMessage(selectedId, { emitter: "gpt", message: answer, hallucination: data.hallucination })
 
       } catch (err: any) {
-        addMessage(selectedId, { emitter: "error", message: err.message })
+        let message = err.message
+        if (apiKey && message === 'Request failed with status code 401') {
+          clearAPIKey()
+          message += ' (Likely the API Key is invalid or has no quota)'
+        }
+        addMessage(selectedId, { emitter: "error", message })
       }
       updateScroll()
       setIsLoading(false)

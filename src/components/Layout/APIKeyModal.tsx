@@ -1,4 +1,4 @@
-import { useAPI } from "@/store/apiKey"
+import { useApiKey } from "@/store/apiKey"
 import { Button, Stack, Text } from "@chakra-ui/react"
 import { useForm } from "react-hook-form"
 import { FiKey } from "react-icons/fi"
@@ -13,7 +13,7 @@ export interface APIKeyProps {
 };
 
 export const APIKeyModal = ({ onConfirm }: APIKeyProps) => {
-  const { setAPIKey } = useAPI()
+  const { setAPIKey } = useApiKey()
   const { register, handleSubmit, reset, setError, formState: { errors, } } = useForm<APIKeyScheme>();
 
   const handleChangeAPIKey = ({ key }: APIKeyScheme) => {
