@@ -17,13 +17,10 @@ export const APIKeyModal = ({ onConfirm }: APIKeyProps) => {
   const { register, handleSubmit, setError, formState: { errors } } = useForm<APIKeyScheme>();
 
   const handleChangeAPIKey = ({ key }: APIKeyScheme) => {
-    if (!key) {
-      return setError('key', { message: 'Required' })
-    }
-    if (!key.startsWith('sk-')) {
+    if (key && !key.startsWith('sk-')) {
       return setError('key', { message: 'Invalid' })
     }
-    setAPIKey(key)
+    setAPIKey(key || undefined)
     if (onConfirm) onConfirm()
   };
 
@@ -38,7 +35,6 @@ export const APIKeyModal = ({ onConfirm }: APIKeyProps) => {
         placeholder="Enter your API Key from ChatGPT here."
         {...register('key', { value: apiKey })}
         errorMessage={errors.key?.message}
-        isRequired
         autoFocus
       />
       <Button
