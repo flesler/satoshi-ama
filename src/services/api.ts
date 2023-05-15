@@ -1,6 +1,9 @@
-const HOST = 'http://localhost:3000'
+const HOST: string | undefined = import.meta.env.VITE_API_URL
 
 const request = async (method: string, path: string, body?: object) => {
+  if (!HOST) {
+    throw new Error('No VITE_API_URL provided')
+  }
   const res = await fetch(`${HOST}${path}`, {
     method, headers: {
       'Accept': 'application/json',
