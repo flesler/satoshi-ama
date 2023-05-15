@@ -28,7 +28,7 @@ type ChatContent = {
 
 type ChatContentEmmiter = "gpt" | "user" | "error";
 
-const savedChats = JSON.parse(store.local("@chat"));
+const savedChats = store.local("@chat");
 const getSafeSavedChats = () => {
   if (Array.isArray(savedChats) && savedChats.length > 0) {
     return savedChats;

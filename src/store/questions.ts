@@ -9,12 +9,12 @@ export interface UseQuestionsProps {
   loadQuestions: () => void
 };
 
-const initialChatState = JSON.parse(store.local("@questions") || '[]');
+const initialChatState = store.local("@questions") || [];
 
 export const useQuestions = create<UseQuestionsProps>((set, get) => ({
   questions: initialChatState,
   setQuestions(questions) {
-    store.local('@questions', JSON.stringify(questions))
+    store.local('@questions', questions)
     set({ questions })
   },
   askedQuestion(question) {
@@ -31,3 +31,5 @@ export const useQuestions = create<UseQuestionsProps>((set, get) => ({
     }
   }
 }))
+
+console.log()

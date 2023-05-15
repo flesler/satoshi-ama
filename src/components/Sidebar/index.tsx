@@ -65,7 +65,7 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
   }, [isResponsive]);
 
   useEffect(() => {
-    store.local("@chat", JSON.stringify(chat))
+    store.local("@chat", chat)
   }, [chat, selectedChat])
 
   const responsiveProps = isResponsive ? {
