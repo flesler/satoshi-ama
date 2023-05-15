@@ -4,13 +4,14 @@ import user from "@/assets/user.png"
 import warning from "@/assets/warning.svg"
 import { useChat } from "@/store/chat"
 import { useAutoAnimate } from "@formkit/auto-animate/react"
-import { useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 
 //Components
 import { Input } from "@/components/Input"
 import api from '@/services/api'
 import { useAPI } from "@/store/apiKey"
+import { useQuestions } from '@/store/questions'
 import {
   Avatar,
   IconButton,
@@ -40,6 +41,13 @@ export const Chat = ({ ...props }: ChatProps) => {
     selectedRole = selectedChat?.role;
 
   const hasSelectedChat = selectedChat && selectedChat?.content.length > 0;
+  const [isLoading, setIsLoading] = useState(false)
+  const { questions, load } = useQuestions()
+
+  useEffect(() => {
+    load()
+  }, [load])
+
 
   const {
     register,
@@ -57,6 +65,10 @@ export const Chat = ({ ...props }: ChatProps) => {
   const handleAsk = async ({ input: prompt }: ChatSchema) => {
     updateScroll()
     const sendRequest = async (selectedId: string) => {
+      if (!apiKey && !questions.includes(prompt)) {
+        return addMessage(selectedId, { emitter: "error", message: 'A valid OpenAI API key is required to send custom prompts' })
+      }
+      setIsLoading(true)
       setValue("input", "");
 
       addMessage(selectedId, {
@@ -64,6 +76,9 @@ export const Chat = ({ ...props }: ChatProps) => {
         message: prompt
       });
 
+      if (selectedRole == "New chat" || selectedRole == undefined) {
+        editChat(selectedId, { role: prompt /*variable*/ })
+      }
       try {
         const data = await api.post('/request', { apiKey, question: prompt })
         const answer: string = data.answer
@@ -72,13 +87,11 @@ export const Chat = ({ ...props }: ChatProps) => {
         }
         addMessage(selectedId, { emitter: "gpt", message: answer })
 
-        if (selectedRole == "New chat" || selectedRole == undefined) {
-          editChat(selectedId, { role: prompt /*variable*/ })
-        }
       } catch (err: any) {
         addMessage(selectedId, { emitter: "error", message: err.message })
       }
       updateScroll()
+      setIsLoading(false)
     };
 
     // Always start a new chat
@@ -176,6 +189,7 @@ export const Chat = ({ ...props }: ChatProps) => {
         <Stack
           maxWidth="768px"
         >
+          {/* TODO: Show a dropdown with questions if no apiKey */}
           <Input
             autoFocus={true}
             variant="filled"
