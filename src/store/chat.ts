@@ -23,6 +23,7 @@ type Chat = {
 type ChatContent = {
   emitter: ChatContentEmmiter,
   message: string
+  hallucination?: boolean
 };
 
 type ChatContentEmmiter = "gpt" | "user" | "error";

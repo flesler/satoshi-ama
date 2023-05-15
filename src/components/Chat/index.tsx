@@ -29,6 +29,8 @@ interface ChatSchema {
   input: string
 };
 
+const HALLUCIONATION_WARNING = `⚠️ This response is very likely an hallucination of ChatGPT. It\'s not based on the provided sources. The "Source" link is likely real but might not actually include the response above.`
+
 export const Chat = ({ ...props }: ChatProps) => {
   const { apiKey } = useAPI()
   const {
@@ -85,7 +87,7 @@ export const Chat = ({ ...props }: ChatProps) => {
         if (data.error || !answer) {
           throw new Error(data.error || '?')
         }
-        addMessage(selectedId, { emitter: "gpt", message: answer })
+        addMessage(selectedId, { emitter: "gpt", message: answer, hallucination: data.hallucination })
 
       } catch (err: any) {
         addMessage(selectedId, { emitter: "error", message: err.message })
@@ -124,7 +126,7 @@ export const Chat = ({ ...props }: ChatProps) => {
           height="full"
         >
           {(hasSelectedChat) ? (
-            selectedChat.content.map(({ emitter, message }, key) => {
+            selectedChat.content.map(({ emitter, message, hallucination }, key) => {
               const getAvatar = () => {
                 switch (emitter) {
                   case "gpt":
@@ -167,6 +169,10 @@ export const Chat = ({ ...props }: ChatProps) => {
                     <ReactMarkdown >
                       {getMessage()}
                     </ReactMarkdown>
+                    {hallucination && <>
+                      <br /><br />
+                      <p style={{ color: 'red', fontSize: '14px', fontStyle: 'italic' }}>{HALLUCIONATION_WARNING}</p>
+                    </>}
                   </Text>
                 </Stack>
               )
