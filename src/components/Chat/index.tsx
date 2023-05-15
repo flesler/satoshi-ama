@@ -51,7 +51,6 @@ export const Chat = ({ ...props }: ChatProps) => {
     load()
   }, [load])
 
-
   const {
     register,
     setValue,

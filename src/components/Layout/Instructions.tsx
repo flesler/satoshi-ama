@@ -44,11 +44,10 @@ export const Instructions = ({ onClick }: IInstructionsProps) => {
   const { questions, load } = useQuestions()
 
   useEffect(() => {
-    if (!questions.length) {
-      load()
-    }
-    introduction[0].list = questions.slice(0, 3)
-  }, [questions])
+    load()
+  }, [load])
+
+  introduction[0].list = questions//.slice(0, 3)
   return (
     <Stack
       justifyContent="center"
@@ -64,8 +63,9 @@ export const Instructions = ({ onClick }: IInstructionsProps) => {
         direction={["column", "column", "row"]}
       >
         {introduction.map(({ icon, list, name }, key) => {
+          const isExamples = name == 'Examples'
           const handleClick = (text: string) => {
-            if (name == 'Examples') {
+            if (isExamples) {
               return () => onClick(text)
             };
             return undefined
@@ -75,6 +75,8 @@ export const Instructions = ({ onClick }: IInstructionsProps) => {
             <Stack
               key={key}
               alignItems="center"
+              overflow={isExamples ? 'scroll' : undefined}
+              maxHeight={isExamples ? '310px' : undefined}
             >
               <Icon
                 as={icon}
