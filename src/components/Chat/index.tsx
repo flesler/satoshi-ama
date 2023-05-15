@@ -1,26 +1,22 @@
 //Modules
-import gptAvatar from "@/assets/satoshi.png"
-import user from "@/assets/user.png"
-import warning from "@/assets/warning.svg"
 import { useChat } from "@/store/chat"
 import { useAutoAnimate } from "@formkit/auto-animate/react"
 import { useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 
 //Components
+import { ChatMessage } from '@/components/Chat/ChatMessage'
 import { Input } from "@/components/Input"
 import api from '@/services/api'
 import { useApiKey } from "@/store/apiKey"
 import { useQuestions } from '@/store/questions'
 import {
-  Avatar,
   IconButton,
   Spinner,
   Stack,
   Text
 } from "@chakra-ui/react"
 import { FiSend } from "react-icons/fi"
-import ReactMarkdown from 'react-markdown'
 import { Instructions } from "../Layout/Instructions"
 
 export interface ChatProps { };
@@ -29,8 +25,7 @@ interface ChatSchema {
   input: string
 };
 
-const HALLUCIONATION_WARNING = `⚠️ This response is very likely an hallucination of ChatGPT. It\'s not based on the provided sources. The "Source" link is likely real but might not actually include the response above.`
-const LINK = /(http[^),\n! ]+)/g
+
 
 export const Chat = ({ ...props }: ChatProps) => {
   const { apiKey, clearAPIKey } = useApiKey()
@@ -87,7 +82,7 @@ export const Chat = ({ ...props }: ChatProps) => {
         if (data.error || !answer) {
           throw new Error(data.error || '?')
         }
-        addMessage(selectedId, { emitter: "gpt", message: answer, hallucination: data.hallucination })
+        addMessage(selectedId, { emitter: "gpt", message: answer, hallucination: data.hallucination, isNew: true })
 
       } catch (err: any) {
         let message = err.message
@@ -141,53 +136,9 @@ export const Chat = ({ ...props }: ChatProps) => {
           height="full"
         >
           {(hasSelectedChat) ? (
-            selectedChat.content.map(({ emitter, message, hallucination }, key) => {
-              const getAvatar = () => {
-                switch (emitter) {
-                  case "gpt":
-                    return gptAvatar
-                  case "error":
-                    return warning
-                  default:
-                    return user
-                }
-              };
-
-              const getMessage = () => {
-                return message.trim().replace(LINK, '[$1]($1)')
-              };
-
-              return (
-                <Stack
-                  key={key}
-                  direction="row"
-                  padding={4}
-                  rounded={8}
-                  backgroundColor={
-                    (emitter == 'gpt') ? ("blackAlpha.200") : ("transparent")
-                  }
-                  spacing={4}
-                >
-                  <Avatar
-                    name={emitter}
-                    src={getAvatar()}
-                  />
-                  <Text
-                    whiteSpace="pre-wrap"
-                    marginTop=".75em !important"
-                    overflow="hidden"
-                  >
-                    <ReactMarkdown >
-                      {getMessage()}
-                    </ReactMarkdown>
-                    {hallucination && <>
-                      <br /><br />
-                      <p style={{ color: 'red', fontSize: '14px', fontStyle: 'italic' }}>{HALLUCIONATION_WARNING}</p>
-                    </>}
-                  </Text>
-                </Stack>
-              )
-            })
+            selectedChat.content.map((msg) => (
+              <ChatMessage key={msg.message} msg={msg} />
+            ))
           ) : (
             <Instructions
               onClick={(text) => setValue('input', text)}

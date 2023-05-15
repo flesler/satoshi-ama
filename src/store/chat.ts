@@ -19,10 +19,11 @@ type Chat = {
   content: ChatContent[]
 };
 
-type ChatContent = {
+export type ChatContent = {
   emitter: "gpt" | "user" | "error",
   message: string
   hallucination?: boolean
+  isNew?: boolean
 };
 
 const initialChatState: Chat[] = store.local("@chat") || [];
@@ -50,6 +51,7 @@ export const useChat = create<UseChatProps>((set, get) => ({
       props = chat[selectedChat];
 
     if (selectedChat > -1) {
+      action.message = action.message.trim()
       chat[selectedChat] = { ...props, content: [...props['content'], action] }
       return ({ chat, selectedChat: chat[selectedChat] });
     };

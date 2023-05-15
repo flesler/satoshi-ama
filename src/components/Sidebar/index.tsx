@@ -66,7 +66,11 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
   }, [isResponsive]);
 
   useEffect(() => {
-    store.local("@chat", chats)
+    const data = chats.map(c => ({
+      // Don't store isNew
+      ...c, content: c.content.map(({ isNew, ...m }) => m)
+    }))
+    store.local("@chat", data)
   }, [chats, selectedChat])
 
   const responsiveProps = isResponsive ? {
