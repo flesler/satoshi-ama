@@ -31,7 +31,7 @@ const initialChatState: Chat[] = store.local("@chat") || [];
 export const useChat = create<UseChatProps>((set, get) => ({
   chat: initialChatState,
   selectedChat: initialChatState[0],
-  setChat: async (payload) => set(({ chat }) => ({ chat: [...chat, payload] })),
+  setChat: async (payload) => set(({ chat }) => ({ chat: [payload, ...chat] })),
   addChat: async (callback) => {
     const hasNewChat = get().chat.find(({ content }) => (content.length === 0));
 
