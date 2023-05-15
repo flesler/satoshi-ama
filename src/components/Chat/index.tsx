@@ -1,27 +1,27 @@
 //Modules
-import gptAvatar from "@/assets/gpt-avatar.svg";
+import gptAvatar from "@/assets/gpt-avatar.svg"
 import user from "@/assets/user.png"
 import warning from "@/assets/warning.svg"
-import { useChat } from "@/store/chat";
+import { useChat } from "@/store/chat"
 import { useAutoAnimate } from "@formkit/auto-animate/react"
 import { Configuration, OpenAIApi } from "openai"
 import { useRef } from "react"
 import { useForm } from "react-hook-form"
-import { useMutation } from "react-query";
+import { useMutation } from "react-query"
 
 //Components
-import { Input } from "@/components/Input";
-import { useAPI } from "@/store/api"
+import { Input } from "@/components/Input"
+import { useAPI } from "@/store/apiKey"
 import {
-    Avatar,
-    IconButton,
-    Spinner,
-    Stack,
-    Text
-} from "@chakra-ui/react";
+  Avatar,
+  IconButton,
+  Spinner,
+  Stack,
+  Text
+} from "@chakra-ui/react"
 import { FiSend } from "react-icons/fi"
 import ReactMarkdown from 'react-markdown'
-import { Instructions } from "../Layout/Instructions";
+import { Instructions } from "../Layout/Instructions"
 
 export interface ChatProps { };
 
@@ -30,7 +30,7 @@ interface ChatSchema {
 };
 
 export const Chat = ({ ...props }: ChatProps) => {
-  const { api } = useAPI()
+  const { apiKey } = useAPI()
   const {
     selectedChat,
     addMessage,
@@ -55,8 +55,9 @@ export const Chat = ({ ...props }: ChatProps) => {
 
   const [parentRef] = useAutoAnimate();
 
+  // TODO: Switch this
   const configuration = new Configuration({
-    apiKey: api
+    apiKey: apiKey
   });
 
   const openAi = new OpenAIApi(configuration);
