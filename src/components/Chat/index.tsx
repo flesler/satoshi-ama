@@ -39,8 +39,8 @@ export const Chat = ({ ...props }: ChatProps) => {
     addMessage,
     addChat,
   } = useChat()
-  const selectedId = selectedChat?.id,
-    selectedRole = selectedChat?.role;
+  // const selectedId = selectedChat?.id,
+  //   selectedRole = selectedChat?.role;
 
   const hasSelectedChat = selectedChat && selectedChat?.content.length > 0;
   const [isLoading, setIsLoading] = useState(false)

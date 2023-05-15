@@ -46,12 +46,13 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
 
   const { toggleColorMode, colorMode } = useColorMode()
   const {
-    chat,
+    chat: chats,
     selectedChat,
     addChat,
     setSelectedChat,
     removeChat,
-    clearAll
+    clearAll,
+    getTitle
   } = useChat();
 
   const {
@@ -65,8 +66,8 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
   }, [isResponsive]);
 
   useEffect(() => {
-    store.local("@chat", chat)
-  }, [chat, selectedChat])
+    store.local("@chat", chats)
+  }, [chats, selectedChat])
 
   const responsiveProps = isResponsive ? {
     position: "fixed" as CSSProperties['position'],
@@ -90,7 +91,7 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
           />
           <Heading
             size="md"
-          >{selectedChat?.role}</Heading>
+          >{selectedChat && getTitle(selectedChat)}</Heading>
           <IconButton
             aria-label="add"
             icon={<FiPlus />}
@@ -159,7 +160,9 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
           overflowY="auto"
           ref={listRef}
         >
-          {chat?.map(({ id, role }) => {
+          {chats?.map((chat) => {
+            const { id } = chat
+            const title = getTitle(chat)
             return (
               <Button
                 id={id}
@@ -178,7 +181,7 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
                   backgroundColor: "whiteAlpha.100"
                 }}
               >
-                <Text isTruncated>{role}</Text>
+                <Text title={title} isTruncated>{title}</Text>
                 <Spacer />
                 <FiTrash2
                   className="icon"
@@ -196,7 +199,7 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
           borderColor="white"
         />
         <Stack>
-          {!!chat?.length && <Button
+          {!!chats?.length && <Button
             leftIcon={<FiTrash2 />}
             justifyContent="flex-start"
             padding={2}
