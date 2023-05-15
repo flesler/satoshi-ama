@@ -1,5 +1,5 @@
 //Modules
-import gptAvatar from "@/assets/gpt-avatar.svg"
+import gptAvatar from "@/assets/satoshi.png"
 import user from "@/assets/user.png"
 import warning from "@/assets/warning.svg"
 import { useChat } from "@/store/chat"
