@@ -37,20 +37,20 @@ const getSafeSavedChats = () => {
 };
 
 const initialChatState: Chat[] = getSafeSavedChats() || [
-  {
-    id: '1',
-    role: 'About this website',
-    content: [
-      {
-        emitter: "user",
-        message: "What website is this?"
-      },
-      {
-        emitter: "gpt",
-        message: "This website is a clone of the ChatGPT website interface created by @WesleyMaik.\n\nYou can also send commands to the original site, with the help of the official ChatGPT API."
-      }
-    ],
-  },
+  // {
+  //   id: '1',
+  //   role: 'About this website',
+  //   content: [
+  //     {
+  //       emitter: "user",
+  //       message: "What website is this?"
+  //     },
+  //     {
+  //       emitter: "gpt",
+  //       message: "This website is a clone of the ChatGPT website interface created by @WesleyMaik.\n\nYou can also send commands to the original site, with the help of the official ChatGPT API."
+  //     }
+  //   ],
+  // },
 ];
 
 export const useChat = create<UseChatProps>((set, get) => ({
@@ -104,4 +104,4 @@ export const useChat = create<UseChatProps>((set, get) => ({
     return ({ chat: newChat });
   }),
   clearAll: async () => set({ chat: [], selectedChat: undefined })
-}));
+}))

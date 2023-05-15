@@ -178,7 +178,7 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
                   backgroundColor: "whiteAlpha.100"
                 }}
               >
-                <Text>{role}</Text>
+                <Text isTruncated>{role}</Text>
                 <Spacer />
                 <FiTrash2
                   className="icon"
@@ -256,4 +256,4 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
       </APIKeyModal>
     </>
   )
-};
+}

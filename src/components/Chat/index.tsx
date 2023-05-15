@@ -11,6 +11,7 @@ import { useMutation } from "react-query"
 
 //Components
 import { Input } from "@/components/Input"
+import api from '@/services/api'
 import { useAPI } from "@/store/apiKey"
 import {
   Avatar,
@@ -62,6 +63,7 @@ export const Chat = ({ ...props }: ChatProps) => {
 
   const openAi = new OpenAIApi(configuration);
 
+  api
   const { mutate, isLoading } = useMutation({
     mutationKey: 'prompt',
     mutationFn: async (prompt: string) => await openAi.createChatCompletion({
@@ -73,7 +75,7 @@ export const Chat = ({ ...props }: ChatProps) => {
 
   const handleAsk = async ({ input: prompt }: ChatSchema) => {
     updateScroll()
-    const sendRequest = (selectedId: string) => {
+    const sendRequest = async (selectedId: string) => {
       setValue("input", "");
 
       addMessage(selectedId, {
@@ -81,51 +83,30 @@ export const Chat = ({ ...props }: ChatProps) => {
         message: prompt
       });
 
-      mutate(prompt, {
-        onSuccess({ status, data }, variable) {
-          if (status === 200) {
-            const message = String(data.choices[0].message?.content)
-            addMessage(selectedId, {
-              emitter: "gpt",
-              message
-            });
-
-            if (selectedRole == "New chat" || selectedRole == undefined) {
-              editChat(selectedId, { role: variable })
-            };
-          }
-          updateScroll()
-        },
-        onError(error) {
-          type Error = {
-            response: {
-              data: {
-                error: {
-                  code: "invalid_api_key" | string,
-                  message: string
-                }
-              },
-            },
-          };
-
-          const { response } = error as Error,
-            message = response.data.error.message
-          addMessage(selectedId, {
-            emitter: "error",
-            message
-          })
-          updateScroll()
+      try {
+        const data = await api.post('/request', { apiKey, question: prompt })
+        const answer: string = data.answer
+        if (data.error || !answer) {
+          throw new Error(data.error || '?')
         }
-      })
+        addMessage(selectedId, { emitter: "gpt", message: answer })
+
+        if (selectedRole == "New chat" || selectedRole == undefined) {
+          editChat(selectedId, { role: prompt /*variable*/ })
+        }
+      } catch (err: any) {
+        addMessage(selectedId, { emitter: "error", message: err.message })
+      }
+      updateScroll()
     };
 
-    if (selectedId) {
-      if (prompt && !isLoading) {
-        sendRequest(selectedId)
-      };
-    } else {
-      addChat(sendRequest)
-    };
+    // if (selectedId) {
+    //   if (prompt && !isLoading) {
+    //     sendRequest(selectedId)
+    //   };
+    // } else {
+    addChat(sendRequest)
+    // };
   };
 
   return (
@@ -241,4 +222,4 @@ export const Chat = ({ ...props }: ChatProps) => {
       </Stack>
     </Stack>
   )
-};
+}
