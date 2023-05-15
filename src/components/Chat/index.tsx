@@ -45,11 +45,11 @@ export const Chat = ({ ...props }: ChatProps) => {
 
   const hasSelectedChat = selectedChat && selectedChat?.content.length > 0;
   const [isLoading, setIsLoading] = useState(false)
-  const { questions, load } = useQuestions()
+  const { questions, loadQuestions, askedQuestion } = useQuestions()
 
   useEffect(() => {
-    load()
-  }, [load])
+    loadQuestions()
+  }, [loadQuestions])
 
   const {
     register,
@@ -70,6 +70,7 @@ export const Chat = ({ ...props }: ChatProps) => {
       if (!apiKey && !questions.includes(prompt)) {
         return addMessage(selectedId, { emitter: "error", message: 'A valid OpenAI API key is required to send custom prompts' })
       }
+      askedQuestion(prompt)
       setIsLoading(true)
       setValue("input", "");
 

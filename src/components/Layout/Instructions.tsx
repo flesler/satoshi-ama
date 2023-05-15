@@ -41,11 +41,11 @@ const introduction: Introduction[] = [
 ];
 
 export const Instructions = ({ onClick }: IInstructionsProps) => {
-  const { questions, load } = useQuestions()
+  const { questions, loadQuestions } = useQuestions()
 
   useEffect(() => {
-    load()
-  }, [load])
+    loadQuestions()
+  }, [loadQuestions])
 
   introduction[0].list = questions//.slice(0, 3)
   return (
