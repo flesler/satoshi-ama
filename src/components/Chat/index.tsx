@@ -38,7 +38,6 @@ export const Chat = ({ ...props }: ChatProps) => {
     selectedChat,
     addMessage,
     addChat,
-    editChat
   } = useChat()
   const selectedId = selectedChat?.id,
     selectedRole = selectedChat?.role;
@@ -79,9 +78,6 @@ export const Chat = ({ ...props }: ChatProps) => {
         message: prompt
       });
 
-      if (selectedRole == "New chat" || selectedRole == undefined) {
-        editChat(selectedId, { role: prompt /*variable*/ })
-      }
       try {
         const data = await api.post('/request', { apiKey, question: prompt })
         const answer: string = data.answer

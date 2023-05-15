@@ -7,7 +7,6 @@ export interface UseChatProps {
   selectedChat: Chat | undefined,
   setChat: (payload: Chat) => void,
   addChat: (callback?: (id: string) => void) => void,
-  editChat: (id: string, payload: Partial<Chat>) => void,
   addMessage: (id: string, action: ChatContent) => void,
   setSelectedChat: (payload: { id: string }) => void,
   removeChat: (pyload: { id: string }) => void,
@@ -76,20 +75,16 @@ export const useChat = create<UseChatProps>((set, get) => ({
       if (callback) callback(id);
     };
   },
-  editChat: async (id, payload) => set(({ chat }) => {
-    const selectedChat = chat.findIndex((query) => (query.id === id));
-    if (selectedChat > -1) {
-      chat[selectedChat] = { ...chat[selectedChat], ...payload };
-      return ({ chat, selectedChat: chat[selectedChat] })
-    };
-    return ({});
-
-  }),
   addMessage: async (id, action) => set(({ chat }) => {
     const selectedChat = chat.findIndex((query) => (query.id === id)),
       props = chat[selectedChat];
 
     if (selectedChat > -1) {
+      const first = props['content'].find(m => m.emitter === 'user')
+      if (first) {
+        // Automatically set question as title
+        props.role = first.message
+      }
       chat[selectedChat] = { ...props, content: [...props['content'], action] }
       return ({ chat, selectedChat: chat[selectedChat] });
     };
