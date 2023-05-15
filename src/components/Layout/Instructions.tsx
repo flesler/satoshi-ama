@@ -81,7 +81,7 @@ export const Instructions = ({ onClick }: IInstructionsProps) => {
               <Icon
                 as={icon}
               />
-              <Heading size="sm">{name}</Heading>
+              <Heading size="sm">{name}{isExamples ? ' (no API Key needed)' : ''}</Heading>
               {list.map((text, key) => (
                 <Button
                   key={key}

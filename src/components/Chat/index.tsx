@@ -206,10 +206,10 @@ export const Chat = ({ ...props }: ChatProps) => {
         <Stack
           maxWidth="768px"
         >
-          {/* TODO: Show a dropdown with questions if no apiKey */}
           <Input
             autoFocus={true}
             variant="filled"
+            placeholder="Use ↑/↓ arrows to cycle through example questions (no API Key needed!)..."
             inputRightAddon={(
               <IconButton
                 aria-label="send_button"

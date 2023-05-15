@@ -187,7 +187,8 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
                   className="icon"
                   onClick={() => removeChat({ id })}
                   style={{
-                    display: (selectedChat?.id == id) ? ("block") : ("none")
+                    display: (selectedChat?.id == id) ? ("block") : ("none"),
+                    minWidth: '16px'
                   }}
                 />
               </Button>
