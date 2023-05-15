@@ -30,6 +30,7 @@ interface ChatSchema {
 };
 
 const HALLUCIONATION_WARNING = `⚠️ This response is very likely an hallucination of ChatGPT. It\'s not based on the provided sources. The "Source" link is likely real but might not actually include the response above.`
+const LINK = /(http[^),\n! ]+)/g
 
 export const Chat = ({ ...props }: ChatProps) => {
   const { apiKey } = useAPI()
@@ -139,11 +140,7 @@ export const Chat = ({ ...props }: ChatProps) => {
               };
 
               const getMessage = () => {
-                if (message.slice(0, 2) == "\n\n") {
-                  return message.slice(2, Infinity)
-                };
-
-                return message
+                return message.trim().replace(LINK, '[$1]($1)')
               };
 
               return (
