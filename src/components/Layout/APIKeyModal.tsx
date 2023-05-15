@@ -18,9 +18,11 @@ export const APIKeyModal = ({ onConfirm }: APIKeyProps) => {
 
   const handleChangeAPIKey = ({ key }: APIKeyScheme) => {
     if (!key) {
-      setError('key', { message: 'Required' })
-      return
-    };
+      return setError('key', { message: 'Required' })
+    }
+    if (!key.startsWith('sk-')) {
+      return setError('key', { message: 'Invalid' })
+    }
     setAPIKey(key)
     reset({ key: "" })
     if (onConfirm) onConfirm()
@@ -30,7 +32,7 @@ export const APIKeyModal = ({ onConfirm }: APIKeyProps) => {
     <Stack
       width="full"
     >
-      <Text>If you want to change the API Key if it is not working or is wrong, you can change it in the field below.</Text>
+      <Text>In order to submit custom questions, you need to provide your own OpenAPI API key</Text>
       <Input
         inputLeftAddon={<FiKey />}
         placeholder="Enter your API Key from ChatGPT here."
