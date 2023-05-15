@@ -4,10 +4,8 @@ import user from "@/assets/user.png"
 import warning from "@/assets/warning.svg"
 import { useChat } from "@/store/chat"
 import { useAutoAnimate } from "@formkit/auto-animate/react"
-import { Configuration, OpenAIApi } from "openai"
 import { useRef } from "react"
 import { useForm } from "react-hook-form"
-import { useMutation } from "react-query"
 
 //Components
 import { Input } from "@/components/Input"
@@ -56,23 +54,6 @@ export const Chat = ({ ...props }: ChatProps) => {
 
   const [parentRef] = useAutoAnimate();
 
-  // TODO: Switch this
-  const configuration = new Configuration({
-    apiKey: apiKey
-  });
-
-  const openAi = new OpenAIApi(configuration);
-
-  api
-  const { mutate, isLoading } = useMutation({
-    mutationKey: 'prompt',
-    mutationFn: async (prompt: string) => await openAi.createChatCompletion({
-      model: 'gpt-3.5-turbo',
-      max_tokens: 256,
-      messages: [{ role: 'user', content: prompt }]
-    })
-  });
-
   const handleAsk = async ({ input: prompt }: ChatSchema) => {
     updateScroll()
     const sendRequest = async (selectedId: string) => {
@@ -100,6 +81,7 @@ export const Chat = ({ ...props }: ChatProps) => {
       updateScroll()
     };
 
+    // Always start a new chat
     // if (selectedId) {
     //   if (prompt && !isLoading) {
     //     sendRequest(selectedId)
