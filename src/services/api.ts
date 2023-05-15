@@ -1,9 +1,6 @@
-const HOST: string | undefined = import.meta.env.VITE_API_URL
+const HOST = location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://satoshi-ama.ngrok.app'
 
 const request = async (method: string, path: string, body?: object) => {
-  if (!HOST) {
-    throw new Error('No VITE_API_URL provided')
-  }
   const res = await fetch(`${HOST}${path}`, {
     method, headers: {
       'Accept': 'application/json',
