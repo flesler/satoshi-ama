@@ -65,13 +65,13 @@ export const Chat = ({ ...props }: ChatProps) => {
   const [parentRef] = useAutoAnimate();
 
   const handleAsk = async ({ input: prompt }: ChatSchema) => {
+    if (!apiKey && !questions.includes(prompt)) {
+      // If no API key is set and the question is non-standard, they need to provide an API key first
+      document.getElementById('set-api-key')?.click()
+      return
+    }
     updateScroll()
     const sendRequest = async (selectedId: string) => {
-      if (!apiKey && !questions.includes(prompt)) {
-        // If no API key is set and the question is non-standard, they need to provide an API key first
-        document.getElementById('set-api-key')?.click()
-        return
-      }
       askedQuestion(prompt)
       setIsLoading(true)
       setValue("input", "");
