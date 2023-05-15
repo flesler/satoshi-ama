@@ -111,6 +111,16 @@ export const Chat = ({ ...props }: ChatProps) => {
     // };
   };
 
+  const cycle = (prompt: string, direction: number) => {
+    let index = questions.indexOf(prompt)
+    if (index === -1) {
+      index = 0
+    } else {
+      index = (index + direction + questions.length) % questions.length
+    }
+    setValue("input", questions[index])
+  }
+
   return (
     <Stack
       width="full"
@@ -211,9 +221,12 @@ export const Chat = ({ ...props }: ChatProps) => {
             {...register('input')}
             onSubmit={console.log}
             onKeyDown={(e) => {
-              if (e.key == "Enter") {
-                handleAsk({ input: e.currentTarget.value })
-              };
+              const input = e.currentTarget.value
+              switch (e.key) {
+                case 'Enter': return handleAsk({ input })
+                case 'ArrowUp': return cycle(input, -1)
+                case 'ArrowDown': return cycle(input, +1)
+              }
             }}
           />
           <Text
