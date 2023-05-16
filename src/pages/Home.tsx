@@ -1,6 +1,6 @@
 //Components
 import { Chat } from "@/components/Chat"
-import { Version } from '@/components/Chat/Version'
+import { Release } from '@/components/Chat/Release'
 import { Sidebar } from "@/components/Sidebar"
 import { Stack, useMediaQuery } from "@chakra-ui/react"
 
@@ -18,7 +18,7 @@ export default function Home() {
         isResponsive={isResponsive}
       />
       <Chat />
-      <Version />
+      <Release />
     </Stack>
   )
 };

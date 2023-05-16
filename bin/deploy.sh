@@ -2,8 +2,8 @@
 set -e
 
 commit=$(git rev-parse --short HEAD)
-echo "Deploying version $commit ..."
-echo "VITE_VERSION=$commit" > .env
+echo "Deploying release $commit ..."
+echo "VITE_RELEASE=$commit" > .env
 npm run build
 rm .env
 git checkout static
