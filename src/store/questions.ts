@@ -17,12 +17,13 @@ export const useQuestions = create<UseQuestionsProps>((set, get) => ({
     store.local('@questions', questions)
     set({ questions })
   },
-  askedQuestion(question) {
-    const { questions } = get()
-    if (questions.includes(question)) {
-      // Move to the end
-      get().setQuestions([...questions.filter(q => q !== question), question])
-    }
+  askedQuestion(_question) {
+    // For now stop cycling
+    // const { questions } = get()
+    // if (questions.includes(question)) {
+    //   // Move to the end
+    //   get().setQuestions([...questions.filter(q => q !== question), question])
+    // }
   },
   loadQuestions() {
     if (!get().questions.length) {
