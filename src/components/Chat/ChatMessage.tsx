@@ -61,7 +61,8 @@ export const ChatMessage = ({ msg }: ChatMessageProps) => {
     spacing={4}
   >
     <Avatar
-      name={msg.emitter}
+      // It gets into the text when copy pasting, annoying
+      // name={msg.emitter}
       src={getAvatar(msg.emitter)}
     />
     <Text

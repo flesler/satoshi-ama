@@ -33,9 +33,9 @@ const introduction: Introduction[] = [
     icon: FiAlertTriangle,
     name: "Limitations",
     list: [
+      "No knowledge of world and events after December 2010",
       "ChatGPT frequently hallucinates responses not based on the data",
-      "ChatGPT might provide a Source that is real but doesn't justify the response",
-      "Limited knowledge of world and events after 2010"
+      "ChatGPT might hallucinate a Source that is real but doesn't justify the response",
     ]
   }
 ];
