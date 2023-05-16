@@ -25,8 +25,8 @@ const introduction: Introduction[] = [
     name: "Capabilities",
     list: [
       "Based off real responses by Satoshi Nakamoto",
-      "Provides the Date of the original response",
       "Provides the Source of the original response",
+      "Tries to detect cases of ChatGPT hallucinating",
     ]
   },
   {

@@ -47,11 +47,7 @@ export const Chat = ({ ...props }: ChatProps) => {
     loadQuestions()
   }, [loadQuestions])
 
-  const {
-    register,
-    setValue,
-    handleSubmit
-  } = useForm<ChatSchema>();
+  const { register, setValue, getValues, handleSubmit } = useForm<ChatSchema>();
 
   const overflowRef = useRef<HTMLDivElement>(null)
   const updateScroll = () => {
@@ -70,7 +66,9 @@ export const Chat = ({ ...props }: ChatProps) => {
     const sendRequest = async (selectedId: string) => {
       askedQuestion(prompt)
       setIsLoading(true)
-      setValue("input", "");
+      if (apiKey) {
+        setValue("input", "");
+      }
 
       addMessage(selectedId, {
         emitter: "user",
@@ -141,9 +139,10 @@ export const Chat = ({ ...props }: ChatProps) => {
               <ChatMessage key={msg.message} msg={msg} />
             ))
           ) : (
-            <Instructions
-              onClick={(text) => setValue('input', text)}
-            />
+              <Instructions onClick={(text) => {
+                setValue('input', text)
+                handleAsk(getValues())
+              }} />
           )}
         </Stack>
       </Stack>
