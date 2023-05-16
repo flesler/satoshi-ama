@@ -12,6 +12,7 @@ import { useApiKey } from "@/store/apiKey"
 import { useQuestions } from '@/store/questions'
 import {
   IconButton,
+  Select,
   Spinner,
   Stack,
   Text
@@ -157,7 +158,24 @@ export const Chat = ({ ...props }: ChatProps) => {
         <Stack
           maxWidth="768px"
         >
-          <Input
+          {!apiKey && <Select
+            placeholder="Select a question to ask..."
+            variant="filled"
+            isDisabled={isLoading}
+            {...register('input')}
+            autoFocus
+            color="#bbb"
+            onChange={(e) => {
+              const input = e.target.value
+              handleAsk({ input })
+            }}
+          >
+            {questions.map(question =>
+              <option key={question} value={question}>{question}</option>
+            )}
+            <option value="">Custom (requires an OpenAI API Key)</option>
+          </Select>}
+          {!!apiKey && <Input
             autoFocus={true}
             variant="filled"
             placeholder="Use ↑/↓ arrows to cycle through example questions (no API Key needed!)..."
@@ -180,7 +198,7 @@ export const Chat = ({ ...props }: ChatProps) => {
                 case 'ArrowDown': return cycle(input, +1)
               }
             }}
-          />
+          />}
           <Text
             textAlign="center"
             fontSize="sm"
