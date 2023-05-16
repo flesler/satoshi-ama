@@ -9,6 +9,7 @@ import { ChatMessage } from '@/components/Chat/ChatMessage'
 import { Input } from "@/components/Input"
 import api from '@/services/api'
 import { useApiKey } from "@/store/apiKey"
+import { qas } from '@/store/qas'
 import { useQuestions } from '@/store/questions'
 import {
   IconButton,
@@ -25,6 +26,12 @@ export interface ChatProps { };
 interface ChatSchema {
   input: string
 };
+
+interface Response {
+  answer?: string
+  error?: string
+  hallucination?: boolean
+}
 
 
 
@@ -76,12 +83,19 @@ export const Chat = ({ ...props }: ChatProps) => {
       });
 
       try {
-        const data = await api.post('/request', { apiKey, question: prompt })
-        const answer: string = data.answer
-        if (data.error || !answer) {
+        let data: Response
+        const qa = qas.find(qa => qa.q === prompt)
+        if (qa) {
+          await delay(1000)
+          // Some can be cached locally
+          data = { answer: qa.a }
+        } else {
+          data = await api.post('/request', { apiKey, question: prompt })
+        }
+        if (data.error || !data.answer) {
           throw new Error(data.error || '?')
         }
-        addMessage(selectedId, { emitter: "gpt", message: answer, hallucination: data.hallucination, isNew: true })
+        addMessage(selectedId, { emitter: "gpt", message: data.answer, hallucination: data.hallucination, isNew: true })
 
       } catch (err: any) {
         let message = err.message
@@ -214,4 +228,8 @@ export const Chat = ({ ...props }: ChatProps) => {
       </Stack>
     </Stack>
   )
+}
+
+export const delay = (ms: number): Promise<void> => {
+  return new Promise(resolve => setTimeout(resolve, ms))
 }

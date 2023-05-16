@@ -1,4 +1,5 @@
 import api from '@/services/api'
+import { qas } from '@/store/qas'
 import store from "store2"
 import { create } from "zustand"
 
@@ -9,7 +10,7 @@ export interface UseQuestionsProps {
   loadQuestions: () => void
 };
 
-const initialChatState = store.local("@questions") || [];
+const initialChatState = qas.length ? qas.map(qa => qa.q) : store.local("@questions") || [];
 
 export const useQuestions = create<UseQuestionsProps>((set, get) => ({
   questions: initialChatState,
