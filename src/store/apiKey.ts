@@ -7,13 +7,13 @@ interface UseApiKeyProps {
   clearAPIKey: () => void
 };
 
-const initialApiState = import.meta.env.VITE_CHATGPT_SECRET_KEY || store.local('@apikey') || undefined;
+const initialApiState = import.meta.env.VITE_CHATGPT_SECRET_KEY || store.local('@apikey') || '';
 
 export const useApiKey = create<UseApiKeyProps>((set, get) => ({
   apiKey: initialApiState,
   setAPIKey: (key) => {
-    store.local('@apikey', key)
+    store.local('@apikey', key || '')
     set({ apiKey: key })
   },
-  clearAPIKey: () => get().setAPIKey(undefined)
+  clearAPIKey: () => get().setAPIKey('')
 }));
