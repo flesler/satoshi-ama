@@ -185,7 +185,9 @@ export const Chat = ({ ...props }: ChatProps) => {
             textAlign="center"
             fontSize="sm"
             opacity={.5}
-          >This project is only a Proof of Concept. Answers sometimes make no sense or don't reflect the source information. Your feedback is greatly appreciated.</Text>
+          >
+            This project is only a Proof of Concept. Answers sometimes make no sense or don't reflect the source information. Your feedback is greatly appreciated.
+          </Text>
         </Stack>
       </Stack>
     </Stack>

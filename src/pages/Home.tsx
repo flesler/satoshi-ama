@@ -1,7 +1,8 @@
 //Components
 import { Chat } from "@/components/Chat"
+import { Version } from '@/components/Chat/Version'
 import { Sidebar } from "@/components/Sidebar"
-import { Stack, useMediaQuery } from "@chakra-ui/react";
+import { Stack, useMediaQuery } from "@chakra-ui/react"
 
 export default function Home() {
   const [isResponsive] = useMediaQuery('(max-width: 800px)')
@@ -17,6 +18,7 @@ export default function Home() {
         isResponsive={isResponsive}
       />
       <Chat />
+      <Version />
     </Stack>
   )
 };
