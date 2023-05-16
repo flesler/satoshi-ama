@@ -98,7 +98,7 @@ export const Chat = ({ ...props }: ChatProps) => {
         addMessage(selectedId, { emitter: "gpt", message: data.answer, hallucination: data.hallucination, isNew: true })
 
       } catch (err: any) {
-        let message = err.message
+        let message: string = err.message
         if (apiKey && message.includes('OpenAI Error:')) {
           clearAPIKey()
           if (message.includes('401')) {
@@ -107,6 +107,9 @@ export const Chat = ({ ...props }: ChatProps) => {
           if (message.includes('429')) {
             message += '\n\n⚠️ Likely the API Key is not paid one or has no quota'
           }
+        }
+        if (message.includes('NetworkError')) {
+          message = 'The service is offline, please retry later'
         }
         addMessage(selectedId, { emitter: "error", message })
       }
