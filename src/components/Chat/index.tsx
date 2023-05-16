@@ -85,9 +85,14 @@ export const Chat = ({ ...props }: ChatProps) => {
 
       } catch (err: any) {
         let message = err.message
-        if (apiKey && message === 'Request failed with status code 401') {
+        if (apiKey && message.includes('OpenAI Error:')) {
           clearAPIKey()
-          message += ' (Likely the API Key is invalid or has no quota)'
+          if (message.includes('401')) {
+            message += '\n\n⚠️ Likely the API Key is invalid or has been revoked'
+          }
+          if (message.includes('429')) {
+            message += '\n\n⚠️ Likely the API Key is not paid one or has no quota'
+          }
         }
         addMessage(selectedId, { emitter: "error", message })
       }
