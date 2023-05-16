@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form"
 
 //Components
 import { ChatMessage } from '@/components/Chat/ChatMessage'
+import { NewChat } from '@/components/Chat/NewChat'
 import { Input } from "@/components/Input"
 import api from '@/services/api'
 import { useApiKey } from "@/store/apiKey"
@@ -46,7 +47,9 @@ export const Chat = ({ ...props }: ChatProps) => {
   // const selectedId = selectedChat?.id,
   //   selectedRole = selectedChat?.role;
 
-  const hasSelectedChat = selectedChat && selectedChat?.content.length > 0;
+  const messageCount = selectedChat && selectedChat.content.length || 0
+  const hasSelectedChat = messageCount > 0
+  const hasReply = messageCount > 1;
   const [isLoading, setIsLoading] = useState(false)
   const { questions, loadQuestions, askedQuestion } = useQuestions()
 
@@ -157,7 +160,7 @@ export const Chat = ({ ...props }: ChatProps) => {
           height="full"
         >
           {(hasSelectedChat) ? (
-            selectedChat.content.map((msg) => (
+            selectedChat!.content.map((msg) => (
               <ChatMessage key={msg.message} msg={msg} />
             ))
           ) : (
@@ -179,7 +182,8 @@ export const Chat = ({ ...props }: ChatProps) => {
         <Stack
           maxWidth="768px"
         >
-          {!apiKey && <Select
+          {hasReply && <NewChat justifyContent="center" />}
+          {!hasReply && !apiKey && <Select
             placeholder="Select a question to ask..."
             variant="filled"
             isDisabled={isLoading}
@@ -196,7 +200,7 @@ export const Chat = ({ ...props }: ChatProps) => {
             )}
             <option value="">Custom (requires an OpenAI API Key)</option>
           </Select>}
-          {!!apiKey && <Input
+          {!hasReply && !!apiKey && <Input
             autoFocus={true}
             variant="filled"
             placeholder="Use ↑/↓ arrows to cycle through example questions (no API Key needed!)..."

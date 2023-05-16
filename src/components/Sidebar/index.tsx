@@ -7,6 +7,7 @@ import { CSSProperties, useEffect, useState } from "react"
 import store from "store2"
 
 //Components
+import { NewChat } from '@/components/Chat/NewChat'
 import { useApiKey } from '@/store/apiKey'
 import {
   Button,
@@ -145,20 +146,7 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
             onClick={handleClose}
           />
         )}
-        <Button
-          leftIcon={<FiPlus size={16} />}
-          borderWidth={1}
-          borderColor="whiteAlpha.400"
-          rounded={4}
-          padding={2}
-          justifyContent="flex-start"
-          transition="all ease .5s"
-          backgroundColor="transparent"
-          onClick={() => addChat()}
-          _hover={{
-            backgroundColor: "whiteAlpha.100"
-          }}
-        >New chat</Button>
+        <NewChat />
         <Stack
           height="full"
           overflowY="auto"
