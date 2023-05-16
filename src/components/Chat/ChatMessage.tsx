@@ -34,6 +34,8 @@ const getAvatar = (emitter: string) => {
 }
 
 const addLink = (text: string) => {
+  // For now escape lists until they render properly
+  text = text.replace(/\n-/mg, '\n\\-')
   return text.replace(LINK, '[$1]($1)')
 }
 
