@@ -58,7 +58,7 @@ export const Instructions = ({ onClick }: IInstructionsProps) => {
       <Heading
         size="lg"
         marginY={8}
-      >Satoshi Nakamoto AMA</Heading>
+      >{document.title}</Heading>
       <Stack
         direction={["column", "column", "row"]}
       >

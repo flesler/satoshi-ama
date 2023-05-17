@@ -96,7 +96,7 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
           />
           <Heading
             size="md"
-          >{selectedChat && getTitle(selectedChat)}</Heading>
+          >{document.title}</Heading>
           <IconButton
             aria-label="add"
             icon={<FiPlus />}
