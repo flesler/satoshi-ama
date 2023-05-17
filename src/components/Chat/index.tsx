@@ -22,8 +22,6 @@ import {
 import { FiSend } from "react-icons/fi"
 import { Instructions } from "../Layout/Instructions"
 
-export interface ChatProps { };
-
 interface ChatSchema {
   input: string
 };
@@ -34,9 +32,11 @@ interface Response {
   hallucination?: boolean
 }
 
+export interface ChatProps {
+  isResponsive?: boolean
+};
 
-
-export const Chat = ({ ...props }: ChatProps) => {
+export const Chat = ({ isResponsive }: ChatProps) => {
   const { apiKey, clearAPIKey } = useApiKey()
   const {
     selectedChat,
@@ -164,7 +164,7 @@ export const Chat = ({ ...props }: ChatProps) => {
               <ChatMessage key={msg.message} msg={msg} />
             ))
           ) : (
-              <Instructions onClick={(text) => {
+              <Instructions isResponsive={isResponsive} onClick={(text) => {
                 setValue('input', text)
                 handleAsk(getValues())
               }} />
@@ -172,7 +172,7 @@ export const Chat = ({ ...props }: ChatProps) => {
         </Stack>
       </Stack>
       <Stack
-        height="20%"
+        height="15%"
         padding={4}
         backgroundColor="blackAlpha.400"
         justifyContent="center"
@@ -181,6 +181,7 @@ export const Chat = ({ ...props }: ChatProps) => {
       >
         <Stack
           maxWidth="768px"
+          minWidth="55%"
         >
           {hasReply && <NewChat justifyContent="center" />}
           {!hasReply && !apiKey && <Select
@@ -226,7 +227,7 @@ export const Chat = ({ ...props }: ChatProps) => {
           />}
           <Text
             textAlign="center"
-            fontSize="sm"
+            fontSize="x-small"
             opacity={.5}
           >
             This project is only a Proof of Concept. Answers sometimes make no sense or don't reflect the source information. Your feedback is greatly appreciated.

@@ -11,6 +11,7 @@ type Introduction = {
 };
 
 export interface IInstructionsProps {
+  isResponsive?: boolean
   onClick: (text: string) => void
 };
 
@@ -37,17 +38,17 @@ const introduction: Introduction[] = [
       "ChatGPT frequently hallucinates responses not based on the data",
       "ChatGPT might hallucinate a Source that is real but doesn't justify the response",
     ]
-  }
+  },
 ];
 
-export const Instructions = ({ onClick }: IInstructionsProps) => {
+export const Instructions = ({ isResponsive, onClick }: IInstructionsProps) => {
   const { questions, loadQuestions } = useQuestions()
 
   useEffect(() => {
     loadQuestions()
   }, [loadQuestions])
 
-  introduction[0].list = questions//.slice(0, 3)
+  introduction[0].list = questions.slice(0, 3)
   return (
     <Stack
       justifyContent="center"
@@ -55,15 +56,15 @@ export const Instructions = ({ onClick }: IInstructionsProps) => {
       height="full"
       overflow="auto"
     >
-      <Heading
-        size="lg"
-        marginY={8}
-      >{document.title}</Heading>
+      {!isResponsive && <Heading size="lg" marginY={8}>{document.title}</Heading>}
       <Stack
         direction={["column", "column", "row"]}
       >
         {introduction.map(({ icon, list, name }, key) => {
           const isExamples = name == 'Examples'
+          if (isResponsive && !isExamples) {
+            return
+          }
           const handleClick = (text: string) => {
             if (isExamples) {
               return () => onClick(text)
@@ -75,8 +76,6 @@ export const Instructions = ({ onClick }: IInstructionsProps) => {
             <Stack
               key={key}
               alignItems="center"
-              overflow={isExamples ? 'scroll' : undefined}
-              maxHeight={isExamples ? '310px' : undefined}
             >
               <Icon
                 as={icon}
@@ -89,6 +88,7 @@ export const Instructions = ({ onClick }: IInstructionsProps) => {
                   height="fit-content"
                   padding={4}
                   onClick={handleClick(text)}
+                  cursor={isExamples ? 'pointer' : 'default'}
                 >
                   <Text
                     overflow="hidden"

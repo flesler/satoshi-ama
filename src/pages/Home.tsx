@@ -24,7 +24,7 @@ export default function Home() {
       <Sidebar
         isResponsive={isResponsive}
       />
-      <Chat />
+      <Chat isResponsive={isResponsive} />
       <Release />
     </Stack>
   )
